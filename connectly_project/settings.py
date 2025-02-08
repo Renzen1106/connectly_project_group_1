@@ -56,8 +56,8 @@ ROOT_URLCONF = 'connectly_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [],  # Leave this empty unless you have global templates
+        'APP_DIRS': True,  # Enable app-level templates
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -68,6 +68,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'connectly_project.wsgi.application'
 

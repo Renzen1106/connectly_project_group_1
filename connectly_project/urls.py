@@ -9,8 +9,8 @@ def home(request):
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Admin panel
+    path('admin/', admin.site.urls),  # Admin panel URL
     path('api-auth/', include('rest_framework.urls')),  # API authentication
-    path('posts/', include('blog_posts.urls')),  # Routes for blog_posts app
-    path('', home, name='home'),  # Root URL
+    path('posts/', include('blog_posts.urls')),  # Include blog_posts URLs here
+    path('', home, name='home'),  # Home URL
 ]
