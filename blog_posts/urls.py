@@ -1,11 +1,42 @@
-from django.http import HttpResponse
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import (
+    UserViewSet,
+    PostViewSet,
+    CommentViewSet,
+    LikePostView,
+    LoginView,
+    RegisterView,
+    TestTokenView,
+    DeleteUserView,
+    UpdateUserView,
+    DeleteAllUsersView
+)
+
+# Default Router for standard CRUD routes
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'posts', PostViewSet)
+router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
-    path('', lambda request: HttpResponse("Welcome to the Posts Home Page!"), name='posts_home'),  # Default view
-    path('users/', views.get_users, name='get_users'),
-    path('users/create/', views.create_user, name='create_user'),
-    path('posts/', views.get_posts, name='get_posts'),
-    path('posts/create/', views.create_post, name='create_post'),
+    # Include routes from DefaultRouter
+    path('', include(router.urls)),
+
+    # Authentication Endpoints
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('test/', TestTokenView.as_view(), name='test'),
+
+    # User Management Endpoints
+    path('delete-user/<int:pk>/', DeleteUserView.as_view(), name='delete-user'),
+    path('update-user/<int:pk>/', UpdateUserView.as_view(), name='update-user'),
+    path('delete-all-users/', DeleteAllUsersView.as_view(), name='delete-all-users'),
+
+    # Post Like Endpoint
+    path('posts/<int:post_id>/like/', LikePostView.as_view(), name='like-post'),
+
+    # Custom Comment Endpoints
+    path('posts/<int:post_id>/comments/', CommentViewSet.as_view({'post': 'create'}), name='create-comment'),
+    path('comments/<int:pk>/', CommentViewSet.as_view({'put': 'update', 'delete': 'destroy'}), name='update-delete-comment'),
 ]
